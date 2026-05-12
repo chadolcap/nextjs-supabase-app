@@ -1,0 +1,9 @@
+.next/
+out/
+build/
+node_modules/
+next-env.d.ts
+*.tsbuildinfo
+.env*
+public/
+shrimp_data/

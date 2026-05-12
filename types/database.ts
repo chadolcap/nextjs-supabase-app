@@ -1,4 +1,4 @@
-export type Profile = {
+export interface Profile {
   id: string;
   email: string | null;
   full_name: string | null;
@@ -7,9 +7,9 @@ export type Profile = {
   website: string | null;
   created_at: string;
   updated_at: string;
-};
+}
 
-export type Database = {
+export interface Database {
   public: {
     Tables: {
       profiles: {
@@ -19,4 +19,4 @@ export type Database = {
       };
     };
   };
-};
+}

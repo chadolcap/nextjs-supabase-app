@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Profile } from "@/types/database";
+import { createClient } from "@/lib/supabase/client";
+import type { Profile } from "@/types/database";
 
 interface ProfileFormProps {
   profile: Profile;
@@ -22,7 +23,9 @@ export function ProfileForm({ profile, userId }: ProfileFormProps) {
     full_name: profile.full_name || "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -49,15 +52,17 @@ export function ProfileForm({ profile, userId }: ProfileFormProps) {
         setTimeout(() => setSuccess(false), 3000);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "프로필 업데이트 중 오류 발생");
+      setError(
+        err instanceof Error ? err.message : "프로필 업데이트 중 오류 발생",
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Card className="p-6 w-full max-w-md">
-      <h3 className="text-lg font-bold mb-4">프로필 수정</h3>
+    <Card className="w-full max-w-md p-6">
+      <h3 className="mb-4 text-lg font-bold">프로필 수정</h3>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -72,7 +77,11 @@ export function ProfileForm({ profile, userId }: ProfileFormProps) {
         </div>
 
         {error && <div className="text-sm text-red-600">{error}</div>}
-        {success && <div className="text-sm text-green-600">프로필이 성공적으로 업데이트되었습니다!</div>}
+        {success && (
+          <div className="text-sm text-green-600">
+            프로필이 성공적으로 업데이트되었습니다!
+          </div>
+        )}
 
         <Button type="submit" disabled={isLoading} className="w-full">
           {isLoading ? "업데이트 중..." : "프로필 수정"}

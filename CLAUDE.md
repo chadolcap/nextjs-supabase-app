@@ -126,6 +126,7 @@ npx shadcn-ui@latest add card
 ### Supabase 클라이언트 생성
 
 서버 환경에서:
+
 ```typescript
 import { createClient } from "@/lib/supabase/server";
 
@@ -136,6 +137,7 @@ export async function someServerAction() {
 ```
 
 클라이언트 환경에서 (`"use client"`):
+
 ```typescript
 import { createClient } from "@/lib/supabase/client";
 

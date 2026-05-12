@@ -1,16 +1,21 @@
+import { Suspense } from "react";
+
 import { redirect } from "next/navigation";
 
-import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
-import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
-import { Suspense } from "react";
-import { Profile } from "@/types/database";
+
 import { ProfileForm } from "@/components/profile-form";
+import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
+import { createClient } from "@/lib/supabase/server";
+import type { Profile } from "@/types/database";
 
 async function UserDetails() {
   const supabase = await createClient();
 
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
   if (userError || !user) {
     redirect("/auth/login");
@@ -37,7 +42,8 @@ function ProfileDisplay({ profile }: { profile: Profile }) {
         <span className="font-semibold">이메일:</span> {profile?.email || "N/A"}
       </div>
       <div>
-        <span className="font-semibold">이름:</span> {profile?.full_name || "미설정"}
+        <span className="font-semibold">이름:</span>{" "}
+        {profile?.full_name || "미설정"}
       </div>
     </div>
   );
@@ -46,17 +52,20 @@ function ProfileDisplay({ profile }: { profile: Profile }) {
 async function ProfileData() {
   const supabase = await createClient();
 
-  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
   if (userError || !user) {
     redirect("/auth/login");
   }
 
-  const { data: profile, error: profileError } = await supabase
+  const { data: profile, error: profileError } = (await supabase
     .from("profiles")
     .select("*")
     .eq("id", user.id)
-    .single() as { data: Profile | null; error: any };
+    .single()) as { data: Profile | null; error: any };
 
   if (profileError) {
     return (
@@ -71,9 +80,9 @@ async function ProfileData() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
       <div>
-        <h3 className="font-bold text-lg mb-4">프로필 보기</h3>
+        <h3 className="mb-4 text-lg font-bold">프로필 보기</h3>
         <ProfileDisplay profile={profile} />
       </div>
       <div>
@@ -85,30 +94,30 @@ async function ProfileData() {
 
 export default function ProtectedPage() {
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
+    <div className="flex w-full flex-1 flex-col gap-12">
       <div className="w-full">
-        <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
+        <div className="flex items-center gap-3 rounded-md bg-accent p-3 px-5 text-sm text-foreground">
           <InfoIcon size="16" strokeWidth={2} />
           This is a protected page that you can only see as an authenticated
           user
         </div>
       </div>
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">프로필 정보</h2>
+      <div className="flex flex-col items-start gap-2">
+        <h2 className="mb-4 text-2xl font-bold">프로필 정보</h2>
         <Suspense fallback={<div>프로필 로딩 중...</div>}>
           <ProfileData />
         </Suspense>
       </div>
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">User details</h2>
-        <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
+      <div className="flex flex-col items-start gap-2">
+        <h2 className="mb-4 text-2xl font-bold">User details</h2>
+        <pre className="max-h-32 overflow-auto rounded border p-3 font-mono text-xs">
           <Suspense>
             <UserDetails />
           </Suspense>
         </pre>
       </div>
       <div>
-        <h2 className="font-bold text-2xl mb-4">Next steps</h2>
+        <h2 className="mb-4 text-2xl font-bold">Next steps</h2>
         <FetchDataSteps />
       </div>
     </div>
