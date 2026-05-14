@@ -20,7 +20,11 @@
       "mcp__playwright__browser_take_screenshot",
       "mcp__playwright__browser_navigate_back",
       "mcp__playwright__browser_snapshot",
-      "mcp__playwright__browser_console_messages"
+      "mcp__playwright__browser_console_messages",
+      "Bash(git restore *)",
+      "Bash(git push *)",
+      "Bash(git rm *)",
+      "Skill(git:commit)"
     ]
   }
 }
